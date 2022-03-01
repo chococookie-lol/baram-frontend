@@ -1,7 +1,8 @@
 import key from './Key';
 import * as example from './ApiExample';
 
-const server = 'http://api.baram.ga';
+//const server = 'http://api.baram.ga';
+const server = '/api';
 
 /*
 모든 api call은 Promise를 리턴한다.
@@ -9,41 +10,51 @@ const server = 'http://api.baram.ga';
 */
 
 export function getSummonerData(name) {
-  return fetchJson(`${server}/summoners/${name}`).then((res) => {
+  return fetch(`${server}/summoners/${name}`)
+  .then((res) => {
     switch (res.status) {
       case 404: //summoner not found
         return fetchSummonerData(name);
       case 200: // ok
-        return res;
+        return res.json();
     }
   });
 }
 
 export function fetchSummonerData(name) {
-  return fetchJson(`${server}/summoners/${name}`).then((res) => {
+  return fetch(`${server}/summoners/${name}`, {
+    method: 'POST',
+  }).then((res) => {
     switch (res.status) {
       case 200: //fetch success
-        return fetchJson(`${server}/summoners/${name}`);
-      case 500: //summoner not found
-        throw new Error('user not found');
+        return fetch(`${server}/summoners/${name}`).then(res => res.json());
+      case 403: //summoner not found
+        throw new Error('Summoner not found');
     }
   });
 }
 
 export function getMatchesBySummoner(summoner) {
   const { name } = summoner;
-  return fetchJson(`${server}/summoners/${name}/matches`).then((res) => {
+  return fetch(`${server}/summoners/${name}/matches`).then((res) => {
     switch (res.status) {
       case 200: //ok
-        return res.data;
-      case 404: //summoner not found
-        throw new Error('user not found need fetch');
+        return res.json();
+      case 404: //summoner(matches) not found
+        throw new Error('Match not found');
     }
   });
 }
 
 export function getMatchDetail(matchID) {
-  return sleep(Math.floor(Math.random() * 3000 + 1000)).then((res) => example.match[matchID]);
+  return fetch(`${server}/matches/${matchID}`).then((res) => {
+    switch (res.status) {
+      case 200: //ok
+        return res.json();
+      case 404: //summoner(matches) not found
+        throw new Error('Match not found');
+    }
+  });
 }
 
 function sleep(ms) {

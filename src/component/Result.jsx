@@ -17,11 +17,6 @@ export default function Result() {
   return <Info params={useParams()} />;
 }
 
-/*
-외부 소스에서 데이터를 불러와서 처리하는 모든 component들은 state에 'error'를 갖고 있다.
-render 하기전에 error 유무 확인 -> 불러오는 data의 null 여부 확인 해줘야함.
-*/
-
 class Info extends React.Component {
   constructor(props) {
     super(props);
@@ -32,12 +27,13 @@ class Info extends React.Component {
     };
   }
 
+  //userdata, matchdata는 각각 data와 error를 갖고있다. 각 component에서는 error 유무를 확인하고 render한다.
+
   componentDidUpdate(prevProps) {
     if (this.props.params !== prevProps.params) {
       this.setState({
         matchdata: null,
         userdata: null,
-        error: null,
       });
       this.refresh();
     }
@@ -49,21 +45,30 @@ class Info extends React.Component {
 
   refresh() {
     Api.getSummonerData(this.props.params.name)
-      .then((res) => {
-        this.setState({ userdata: res });
-        return Api.getMatchesBySummoner(res);
-      })
-      .then((res) => this.setState({ matchdata: res }))
-      .catch((err) => this.setState({ error: err }));
+      .then(
+        (res) => {
+          this.setState({ userdata: {data: res} });
+          return Api.getMatchesBySummoner(res);
+        }, (err) => {
+          this.setState({ userdata: {error: err} });  //fetch summoner data fail, 여기서 throw 안하면 다음 chain에서 resolve로 넘어감
+          throw err;
+        }
+      )
+      .then(
+        (res) => {
+          this.setState({ matchdata: {data: res} })
+        }, (err) => {
+          this.setState({ matchdata: {error: err} })
+        }
+      );
   }
 
   render() {
-    const { matchdata, userdata, error } = this.state;
+    const { matchdata, userdata } = this.state;
     return (
       <div id="container">
-        {error ? <h3>{error.message}</h3> : ''}
-        {userdata ? <SummonerInfo userdata={this.state.userdata} /> : <div>Loading...</div>}
-        {matchdata ? <MatchList matchdata={this.state.matchdata} /> : <div>Loading...</div>}
+        <SummonerInfo userdata={userdata} />
+        <MatchList matchdata={matchdata} />
       </div>
     );
   }
@@ -73,15 +78,18 @@ function SummonerInfo(props) {
   const { userdata } = props;
   return (
     <div id="userData">
-      {userdata ? (
-        Object.keys(userdata).map((k, v) => (
-          <p key={k}>
-            {k} : {userdata[k]}
-          </p>
-        ))
-      ) : (
+      {userdata ?
+        userdata.error ?
+          <div>{userdata.error.message}</div>
+          :
+          Object.keys(userdata.data).map((k, v) => (
+            <p key={k}>
+              {k} : {userdata.data[k]}
+            </p>
+          ))
+        : 
         <div>Loading...</div>
-      )}
+      }
     </div>
   );
 }
@@ -90,20 +98,27 @@ function MatchList(props) {
   const { matchdata } = props;
   return (
     <div id="matchData">
-      <table>
-        <thead>
-          <tr>
-            {infoKeys.map((k) => (
-              <th key={k}>{k}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {Object.keys(matchdata).map((k, v) => (
-            <MatchRow key={matchdata[k]} mid={matchdata[k]} />
-          ))}
-        </tbody>
-      </table>
+      {matchdata ?
+        matchdata.error ?
+          <div>{matchdata.error.message}</div>
+          :
+          <table>
+            <thead>
+              <tr>
+                {infoKeys.map((k) => (
+                  <th key={k}>{k}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {matchdata.data.map((i) => (
+                <MatchRow key={i} mid={i} />
+              ))}
+            </tbody>
+          </table>
+        :
+        <div>Loading...</div>
+      }
     </div>
   );
 }
@@ -120,7 +135,7 @@ class MatchRow extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.mid !== prevProps.mid) {
       this.setState({
-        data: null,
+        mdata: null,
         error: null,
       });
       this.refresh();
@@ -133,15 +148,13 @@ class MatchRow extends React.Component {
 
   refresh() {
     Api.getMatchDetail(this.props.mid).then(
-      (res) => {
-        this.setState({ data: res });
-      },
-      (err) => this.setState(err)
+      (res) => this.setState({ mdata: res }),
+      (err) => this.setState({ error: err })
     );
   }
 
   render() {
-    const { data, error } = this.state;
+    const { mdata, error } = this.state;
 
     if (error) {
       return (
@@ -149,18 +162,18 @@ class MatchRow extends React.Component {
           <td>Error</td>
         </tr>
       );
-    } else if (!data) {
+    } else if (mdata) {
       return (
         <tr>
-          <td>Loading...</td>
+          {infoKeys.map((k) => (
+            <td key={mdata[k]}>{mdata[k]}</td>
+          ))}
         </tr>
       );
     } else {
       return (
         <tr>
-          {infoKeys.map((k) => (
-            <td key={data.info[k]}>{data.info[k]}</td>
-          ))}
+          <td>Loading...</td>
         </tr>
       );
     }
