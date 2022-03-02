@@ -29,24 +29,22 @@ export default class Info extends React.Component {
     this.refresh();
   }
 
-  refresh() {
-    Api.getSummonerData(this.props.params.name)
-      .then(
-        (res) => {
-          this.setState({ userdata: { data: res } });
-          return Api.getMatchesBySummoner(res);
-        }, (err) => {
-          this.setState({ userdata: { error: err } });  //fetch summoner data fail, 여기서 throw 안하면 다음 chain에서 resolve로 넘어감
-          throw err;
-        }
-      )
-      .then(
-        (res) => {
-          this.setState({ matchdata: { data: res } })
-        }, (err) => {
-          this.setState({ matchdata: { error: err } })
-        }
-      );
+  async refresh(){
+    let userdata;
+    let matchdata;
+    try{
+      userdata = await Api.getSummonerData(this.props.params.name);
+      this.setState({ userdata: { data: userdata } });
+      matchdata = await Api.getMatchesBySummoner(userdata);
+      this.setState({ matchdata: { data: matchdata } });
+    }catch(e){
+      if(!matchdata){
+        this.setState({ matchdata: { error: e } });
+      }
+      if(!userdata){
+        this.setState({ userdata: { error: e } });
+      }
+    }
   }
 
   render() {

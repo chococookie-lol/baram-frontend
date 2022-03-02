@@ -64,13 +64,3 @@ export function getMatchDetail(matchID) {
     }
   });
 }
-
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
-function fetchJson(url) {
-  return fetch(url).then((res) => res.json());
-}
