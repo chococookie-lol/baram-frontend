@@ -2,7 +2,7 @@
   "name": "baram-front",
   "version": "0.0.0",
   "private": true,
-  "homepage": "https://baram.ga/",
+  "homepage": "http://baram.ga/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
