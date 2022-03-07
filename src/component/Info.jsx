@@ -35,7 +35,7 @@ export default class Info extends React.Component {
     try{
       userdata = await Api.getSummonerData(this.props.params.name);
       this.setState({ userdata: { data: userdata } });
-      matchdata = await Api.getMatchesBySummoner(userdata);
+      matchdata = await Api.getMatchesBySummoner(tihs.props.params.name);
       this.setState({ matchdata: { data: matchdata } });
     }catch(e){
       if(!matchdata){
