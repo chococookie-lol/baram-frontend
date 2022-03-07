@@ -1,4 +1,4 @@
-import key from './Key';
+//import key from './Key';
 import * as example from './ApiExample';
 
 const server = 'http://api.baram.ga';
@@ -9,7 +9,7 @@ const server = 'http://api.baram.ga';
 에러처리는 api 밖에서
 */
 
-export function getSummonerData(name) {
+export function getSummonerData(name: string) {
   return fetch(`${server}/summoners/${name}`)
   .then((res) => {
     switch (res.status) {
@@ -23,7 +23,7 @@ export function getSummonerData(name) {
   });
 }
 
-export function fetchSummonerData(name) {
+export function fetchSummonerData(name: string) {
   return fetch(`${server}/summoners/${name}`, {
     method: 'POST',
   }).then((res) => {
@@ -38,8 +38,8 @@ export function fetchSummonerData(name) {
   });
 }
 
-export function getMatchesBySummoner(summoner) {
-  const { name } = summoner;
+export function getMatchesBySummoner(summoner: string) {
+  const name: string = summoner;
   return fetch(`${server}/summoners/${name}/matches`).then((res) => {
     switch (res.status) {
       case 200: //ok
@@ -52,7 +52,7 @@ export function getMatchesBySummoner(summoner) {
   });
 }
 
-export function getMatchDetail(matchID) {
+export function getMatchDetail(matchID: string) {
   return fetch(`${server}/matches/${matchID}`).then((res) => {
     switch (res.status) {
       case 200: //ok
