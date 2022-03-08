@@ -9,6 +9,21 @@ const server = 'http://api.baram.ga';
 에러처리는 api 밖에서
 */
 
+export interface UserData {
+  data?: SummonerData,
+  error?: string,
+}
+
+export interface SummonerData {
+    accountId: string,
+    id: string,
+    name: string,
+    profilIconId: number,
+    puuid: string,
+    revisionData: string,
+    summonerLevel: string
+  }
+
 export function getSummonerData(name: string) {
   return fetch(`${server}/summoners/${name}`)
   .then((res) => {

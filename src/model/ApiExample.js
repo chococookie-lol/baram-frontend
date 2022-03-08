@@ -1,6 +1,6 @@
 // example api
 export const match_list = ["KR_5778946557","KR_5778944288","KR_5778564365","KR_5778435363","KR_5776304010","KR_5774141679","KR_5774098060","KR_5774054925","KR_5772816904","KR_5772893041","KR_5772842256","KR_5772558357","KR_5772489745","KR_5772253695","KR_5772198125","KR_5770105349","KR_5769454665","KR_5769418209","KR_5769204640","KR_5767687924"];
-export const summoner_info = {"id":"4-hbmwHML0qbL-iE9ikNsa7STLZAo4pXlFd25WLshJhLBMw","accountId":"-SUH2bzKDVz1oUDGWPlYwpc_SmNG3EMs58tJEiJyaX2k3FE","puuid":"At7E6ow96GwuBfy6PXsHcOE-OE4UKShMauapiTUTgZeu8C4UKejM2ECaPXQ_TSYoXS9hk3Jtf8W3DQ","name":"SKT T1 Faker","profileIconId":924,"revisionDate":1645416150000,"summonerLevel":390};
+export const summoner_info = {"id":"4-hbmwHML0qbL-iE9ikNsa7STLZAo4pXlFd25WLshJhLBMw","accountId":"-SUH2bzKDVz1oUDGWPlYwpc_SmNG3EMs58tJEiJyaX2k3FE","puuid":"At7E6ow96GwuBfy6PXsHcOE-OE4UKShMauapiTUTgZeu8C4UKejM2ECaPXQ_TSYoXS9hk3Jtf8W3DQ","name":"SKT T1 Faker","profileIconId":924,"revisionDate":"1645416150000","summonerLevel":390};
 export const match={
     "KR_5778946557": {
         "metadata": {

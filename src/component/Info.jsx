@@ -42,7 +42,7 @@ export default class Info extends React.Component {
         this.setState({ matchdata: { error: e } });
       }
       if(!userdata){
-        this.setState({ userdata: { error: e } });
+        this.setState({ userdata: { error: e.message }});
       }
     }
   }
