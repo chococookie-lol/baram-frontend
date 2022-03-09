@@ -38,15 +38,13 @@ export default function Search() {
             <Stack gap={2}>
               <div></div>
               <Container>
-                <Row>
-                  <Col></Col>
-                  <Col xs={4}>
+                <Row className='justify-content-center'>
+                  <Col md={5} xs={7}>
                     <FormControl type='text' value={summonerName} onChange={onChange} placeholder="소환사명" />
                   </Col>
-                  <Col xs={2}>
+                  <Col md={2} xs={2}>
                     <Button variant='primary' disabled={isLoading} type='submit'>검색</Button>
                   </Col>
-                  <Col></Col>
                 </Row>
               </Container>
             </Stack>
