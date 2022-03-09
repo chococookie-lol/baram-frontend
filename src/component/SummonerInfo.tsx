@@ -1,6 +1,7 @@
 import getProfileIconUrl from 'model/Ddragon';
 import { UserData } from '../model/Api';
 import '../css/SummonerInfo.css';
+import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
 
 interface SummonerInfoProps {
   userdata?: UserData
@@ -25,12 +26,26 @@ export default function SummonerInfo(props: SummonerInfoProps) {
   } else if (userdata.data !== undefined) {
     return (
       <div id="userData">
-        <div id='profileIconContainer'>
-          <img className='profileIcon' src={getProfileIconUrl(String(userdata.data.profileIconId))} />
-        </div>
-        <div id='summonerNameContainer'>
-          {userdata.data.name}
-        </div>
+        <Stack gap={3}>
+          <div></div>
+          <Container>
+            <Row className='justify-content-start'>
+              <Col xxl={1} md={2} xs={3}>
+                <img className='profileIcon' src={getProfileIconUrl(String(userdata.data.profileIconId))} />
+              </Col>
+              <Col xxl={11} md={10} xs={9}>
+                <Stack gap={2}>
+                  <span style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{userdata.data.name}</span>
+                  <div>
+                    <Button variant='outline-primary' size='sm'>전적갱신</Button>
+                  </div>
+                  <span style={{ fontSize: '0.9em' }}>최근 갱신: 22/03/09</span>
+                </Stack>
+              </Col>
+            </Row>
+          </Container>
+          <div></div>
+        </Stack>
       </div>
     )
   } else {

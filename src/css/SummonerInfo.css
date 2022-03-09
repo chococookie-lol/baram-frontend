@@ -1,16 +1,5 @@
 .profileIcon {
-    width: 100px;
+    width: 100;
     height: 100px;
-    border-radius: 50%;
-    margin-left: 10px;
-}
-
-div#profileIconContainer {
-    width: 100px;
-    float: left;
-}
-
-div#summonerNameContainer {
-    height: 100px;
-    float: left;
+    border-radius: 20%;
 }
