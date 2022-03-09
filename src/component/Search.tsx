@@ -39,11 +39,13 @@ export default function Search() {
               <div></div>
               <Container>
                 <Row className='justify-content-center'>
-                  <Col md={5} xs={7}>
+                  <Col md={6} sm={9} xs={12} className='mb-1'>
                     <FormControl type='text' value={summonerName} onChange={onChange} placeholder="소환사명" />
                   </Col>
-                  <Col md={2} xs={2}>
-                    <Button variant='primary' disabled={isLoading} type='submit'>검색</Button>
+                  <Col md={2} sm={3} xs={12} className='mb-1'>
+                    <div className='d-grid'>
+                      <Button variant='primary' disabled={isLoading} type='submit'>검색</Button>
+                    </div>
                   </Col>
                 </Row>
               </Container>
