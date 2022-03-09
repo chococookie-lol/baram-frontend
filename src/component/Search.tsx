@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import '../css/Search.css';
 
 export default function Search() {
   const [summonerName, setSummonerName] = useState('');
