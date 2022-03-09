@@ -53,9 +53,8 @@ export function fetchSummonerData(name: string) {
   });
 }
 
-export function getMatchesBySummoner(summoner: string) {
-  const name: string = summoner;
-  return fetch(`${server}/summoners/${name}/matches`).then((res) => {
+export function getMatchesBySummoner(puuid: string) {
+  return fetch(`${server}/matches/by-puuid/${puuid}`).then((res) => {
     switch (res.status) {
       case 200: //ok
         return res.json();
