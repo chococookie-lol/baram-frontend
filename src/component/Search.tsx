@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Button, Col, Container, Stack, FormControl, FormGroup, Row } from 'react-bootstrap';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import '../css/Search.css';
 
 export default function Search() {
   const [summonerName, setSummonerName] = useState('');
@@ -34,10 +34,23 @@ export default function Search() {
       <div className='HeaderBox'></div>
       <div className="SearchBoxContainer">
         <form onSubmit={onSubmit}>
-          <input type='text' value={summonerName} onChange={onChange} placeholder="소환사명" />
-          <button style={{
-            opacity: isLoading ? 0.3 : 1
-          }}>검색</button>
+          <FormGroup role='form'>
+            <Stack gap={2}>
+              <div></div>
+              <Container>
+                <Row>
+                  <Col></Col>
+                  <Col xs={4}>
+                    <FormControl type='text' value={summonerName} onChange={onChange} placeholder="소환사명" />
+                  </Col>
+                  <Col xs={2}>
+                    <Button variant='primary' disabled={isLoading} type='submit'>검색</Button>
+                  </Col>
+                  <Col></Col>
+                </Row>
+              </Container>
+            </Stack>
+          </FormGroup>
         </form>
       </div>
       <Outlet />
