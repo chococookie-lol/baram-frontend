@@ -24,7 +24,7 @@ export default function SummonerInfo(props: SummonerInfoProps) {
   } else if (userdata.data !== undefined) {
     return (
       <div id="userData">
-        <img className='profileIcon' src={getProfileIconUrl(userdata.data.profilIconId.toString())} />
+        <img className='profileIcon' src={getProfileIconUrl(String(userdata.data.profilIconId))} />
         <p>{userdata.data.name}</p>
       </div>
     )
