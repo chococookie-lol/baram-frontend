@@ -10,6 +10,10 @@ interface SummonerInfoProps {
 export default function SummonerInfo(props: SummonerInfoProps) {
   const { userdata } = props;
 
+  function onButtonClick() {
+    //alert('a');
+  }
+
   if (userdata === undefined) {
     return (
       <div id="userData">
@@ -30,14 +34,14 @@ export default function SummonerInfo(props: SummonerInfoProps) {
           <div></div>
           <Container>
             <Row className='justify-content-start'>
-              <Col xxl={1} md={2} xs={3}>
+              <Col xxl={1} md={2} xs={5}>
                 <img className='profileIcon' src={getProfileIconUrl(String(userdata.data.profileIconId))} />
               </Col>
-              <Col xxl={11} md={10} xs={9}>
+              <Col xxl={11} md={10} xs={7}>
                 <Stack gap={2}>
                   <span style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{userdata.data.name}</span>
                   <div>
-                    <Button variant='outline-primary' size='sm'>전적갱신</Button>
+                    <Button variant='outline-primary' size='sm' onClick={onButtonClick}>전적갱신</Button>
                   </div>
                   <span style={{ fontSize: '0.9em' }}>최근 갱신: 22/03/09</span>
                 </Stack>
