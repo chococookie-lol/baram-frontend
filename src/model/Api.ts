@@ -18,7 +18,7 @@ export interface SummonerData {
   accountId: string,
   id: string,
   name: string,
-  profilIconId: number,
+  profileIconId: number,
   puuid: string,
   revisionData: string,
   summonerLevel: string

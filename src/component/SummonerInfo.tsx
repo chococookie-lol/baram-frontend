@@ -1,5 +1,6 @@
 import getProfileIconUrl from 'model/Ddragon';
-import { UserData, SummonerData } from '../model/Api';
+import { UserData } from '../model/Api';
+import '../css/SummonerInfo.css';
 
 interface SummonerInfoProps {
   userdata?: UserData
@@ -24,8 +25,12 @@ export default function SummonerInfo(props: SummonerInfoProps) {
   } else if (userdata.data !== undefined) {
     return (
       <div id="userData">
-        <img className='profileIcon' src={getProfileIconUrl(String(userdata.data.profilIconId))} />
-        <p>{userdata.data.name}</p>
+        <div id='profileIconContainer'>
+          <img className='profileIcon' src={getProfileIconUrl(String(userdata.data.profileIconId))} />
+        </div>
+        <div id='summonerNameContainer'>
+          {userdata.data.name}
+        </div>
       </div>
     )
   } else {
