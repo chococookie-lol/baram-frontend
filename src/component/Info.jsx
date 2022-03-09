@@ -4,7 +4,7 @@ import MatchList from './MatchList';
 import * as Api from '../model/Api';
 import { useParams } from 'react-router-dom';
 
-export default function Info(props) {
+export default function Info() {
   const [userData, setUserData] = useState(null);
   const [matchIds, setMatchIds] = useState(null);
 
