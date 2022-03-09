@@ -5,6 +5,7 @@ import Search from './component/Search';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route, HashRouter, } from "react-router-dom";
 import Info from 'component/Info';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <HashRouter>
