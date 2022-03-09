@@ -7,7 +7,7 @@ interface SummonerInfoProps {
 export default function SummonerInfo(props: SummonerInfoProps) {
   const { userdata } = props;
 
-  if (userdata === null || userdata === undefined) {
+  if (userdata === undefined) {
     return (
       <div id="userData">
         <div>Loading...</div>
@@ -33,6 +33,8 @@ export default function SummonerInfo(props: SummonerInfoProps) {
         ))}
       </div>
     )
+  } else {
+    return (<></>);
   }
 
 }

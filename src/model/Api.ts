@@ -15,27 +15,32 @@ export interface UserData {
 }
 
 export interface SummonerData {
-    accountId: string,
-    id: string,
-    name: string,
-    profilIconId: number,
-    puuid: string,
-    revisionData: string,
-    summonerLevel: string
-  }
+  accountId: string,
+  id: string,
+  name: string,
+  profilIconId: number,
+  puuid: string,
+  revisionData: string,
+  summonerLevel: string
+}
+
+export interface MatchIds {
+  data?: [string],
+  error?: string,
+}
 
 export function getSummonerData(name: string) {
   return fetch(`${server}/summoners/${name}`)
-  .then((res) => {
-    switch (res.status) {
-      case 404: //summoner not found
-        return fetchSummonerData(name);
-      case 200: // ok
-        return res.json();
-      default:
-        throw new Error('Error');
-    }
-  });
+    .then((res) => {
+      switch (res.status) {
+        case 404: //summoner not found
+          return fetchSummonerData(name);
+        case 200: // ok
+          return res.json();
+        default:
+          throw new Error('Error');
+      }
+    });
 }
 
 export function fetchSummonerData(name: string) {

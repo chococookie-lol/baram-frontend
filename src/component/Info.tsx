@@ -5,31 +5,36 @@ import * as Api from '../model/Api';
 import { useParams } from 'react-router-dom';
 
 export default function Info() {
-  const [userData, setUserData] = useState(null);
-  const [matchIds, setMatchIds] = useState(null);
+  const [userData, setUserData] = useState<Api.UserData | undefined>(undefined);
+  const [matchIds, setMatchIds] = useState<Api.MatchIds | undefined>(undefined);
 
-  const { name } = useParams();
+  const { name } = useParams<{ name: string }>();
 
   useEffect(() => {
-    setMatchIds(null);
-    setUserData(null);
+    setMatchIds(undefined);
+    setUserData(undefined);
     refresh();
   }, [name]);
 
   async function refresh() {
     let userdata;
     let matchdata;
+
+    if (name === undefined) return;
+
     try {
       userdata = await Api.getSummonerData(name);
       setUserData({ data: userdata });
       matchdata = await Api.getMatchesBySummoner(userdata.puuid);
       setMatchIds({ data: matchdata });
-    } catch (e) {
-      if (!matchdata) {
-        setMatchIds({ error: e });
-      }
-      if (!userdata) {
-        setUserData({ error: e.message })
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        if (!matchdata) {
+          setMatchIds({ error: e.message });
+        }
+        if (!userdata) {
+          setUserData({ error: e.message })
+        }
       }
     }
   }
