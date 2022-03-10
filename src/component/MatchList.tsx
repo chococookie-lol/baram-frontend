@@ -3,6 +3,7 @@ import * as Api from '../model/Api';
 import '../css/MatchList.css';
 
 const infoKeys = [
+  'matchId',
   'gameEndTimestamp',
   'gameId',
   'gameMode',
