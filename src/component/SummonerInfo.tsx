@@ -20,6 +20,7 @@ export default function SummonerInfo(props: SummonerInfoProps) {
       return;
     }
 
+
     setIsFetching(true);
 
     let result;
@@ -28,7 +29,7 @@ export default function SummonerInfo(props: SummonerInfoProps) {
       result = await fetchSummonerData(userdata.data.name);
       if (result === undefined) {
         setIsFetching(false);
-        navigate('/search/' + userdata.data.name);
+        window.location.reload();
         return;
       }
     } catch (e: unknown) {
@@ -71,7 +72,7 @@ export default function SummonerInfo(props: SummonerInfoProps) {
                 <Stack gap={2}>
                   {
                     userdata === undefined ?
-                      <Placeholder xs={2} />
+                      <Placeholder xs={2} size='lg' />
                       :
                       <span style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{userdata?.data?.name}</span>
                   }
@@ -91,10 +92,10 @@ export default function SummonerInfo(props: SummonerInfoProps) {
                   </div>
                   {
                     userdata === undefined ?
-                      <Placeholder xs={2} />
+                      <Placeholder xs={4} />
                       :
                       userdata.data === undefined ?
-                        <Placeholder xs={2} />
+                        <Placeholder xs={4} />
                         :
                         userdata.data.recentUpdate === null ?
                           <span style={{ fontSize: '0.9em' }}>갱신 기록 없음</span>
