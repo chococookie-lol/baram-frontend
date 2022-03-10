@@ -1,5 +1,28 @@
+.profile-wrap {
+    margin: 10px auto;
+    position: relative;
+}
+
 .profileIcon {
-    width: 100;
-    height: 100px;
+    width: 96px;
+    height: 96px;
     border-radius: 20%;
+    vertical-align: middle;
+}
+
+div.level-text {
+    height: 22px;
+    text-align: center;
+    position: absolute;
+    top: 95%;
+    left: 50%;
+    transform: translate( -50%, -50% );
+}
+
+p.level-text {
+    font-family: bold;
+    width: 44px;
+    height: 24px;
+    color: rgb(234, 189, 86);;
+    background: url("https://s-lol-web.op.gg/static/images/site/summoner/bg-levelbox.png") 0% 0% / 100%
 }

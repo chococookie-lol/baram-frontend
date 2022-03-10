@@ -1,7 +1,9 @@
 import getProfileIconUrl from 'model/Ddragon';
-import { UserData } from '../model/Api';
+import { fetchSummonerData, UserData } from '../model/Api';
 import '../css/SummonerInfo.css';
-import { Button, Col, Container, Placeholder, Row, Stack } from 'react-bootstrap';
+import { Button, Col, Container, Placeholder, Row, Spinner, Stack } from 'react-bootstrap';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface SummonerInfoProps {
   userdata?: UserData
@@ -9,9 +11,32 @@ interface SummonerInfoProps {
 
 export default function SummonerInfo(props: SummonerInfoProps) {
   const { userdata } = props;
+  const [isFetching, setIsFetching] = useState(false);
 
-  function onButtonClick() {
-    //alert('a');
+  const navigate = useNavigate();
+
+  async function onButtonClick() {
+    if (userdata === undefined || userdata.data === undefined) {
+      return;
+    }
+
+    setIsFetching(true);
+
+    let result;
+
+    try {
+      result = await fetchSummonerData(userdata.data.name);
+      if (result === undefined) {
+        setIsFetching(false);
+        navigate('/search/' + userdata.data.name);
+        return;
+      }
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        console.log(e.message);
+        setIsFetching(false);
+      }
+    }
   }
 
   if (userdata?.error !== undefined) {
@@ -32,7 +57,14 @@ export default function SummonerInfo(props: SummonerInfoProps) {
                   userdata === undefined ?
                     <div></div>
                     :
-                    <img className='profileIcon' src={getProfileIconUrl(String(userdata?.data?.profileIconId))} />
+                    <div className='profile-wrap'>
+                      <div className='icon-image'>
+                        <img className='profileIcon' src={getProfileIconUrl(String(userdata?.data?.profileIconId))} />
+                      </div>
+                      <div className='level-text'>
+                        <p className='level-text'>{userdata?.data?.summonerLevel}</p>
+                      </div>
+                    </div>
                 }
               </Col>
               <Col xxl={11} md={10} xs={7}>
@@ -44,13 +76,30 @@ export default function SummonerInfo(props: SummonerInfoProps) {
                       <span style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{userdata?.data?.name}</span>
                   }
                   <div>
-                    <Button variant='outline-primary' size='sm' onClick={onButtonClick}>전적갱신</Button>
+                    <Button variant='outline-primary' size='sm' onClick={onButtonClick} disabled={isFetching}>
+                      {
+                        isFetching ?
+                          <>
+                            <Spinner as='span' animation='border' size='sm' role='status' area-hidden='true' />
+                            <span> </span>
+                          </>
+                          :
+                          <></>
+                      }
+                      전적갱신
+                    </Button>
                   </div>
                   {
                     userdata === undefined ?
                       <Placeholder xs={2} />
                       :
-                      <span style={{ fontSize: '0.9em' }}>최근 갱신: 22/03/09</span>
+                      userdata.data === undefined ?
+                        <Placeholder xs={2} />
+                        :
+                        userdata.data.recentUpdate === null ?
+                          <span style={{ fontSize: '0.9em' }}>갱신 기록 없음</span>
+                          :
+                          <span style={{ fontSize: '0.9em' }}>최근 갱신: {new Date(Number(userdata.data.recentUpdate)).toLocaleDateString()}</span>
                   }
                 </Stack>
               </Col>

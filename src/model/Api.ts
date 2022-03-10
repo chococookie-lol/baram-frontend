@@ -21,7 +21,8 @@ export interface SummonerData {
   profileIconId: number,
   puuid: string,
   revisionData: string,
-  summonerLevel: string
+  summonerLevel: string,
+  recentUpdate: string,
 }
 
 export interface MatchIds {
@@ -49,7 +50,8 @@ export function fetchSummonerData(name: string) {
   }).then((res) => {
     switch (res.status) {
       case 200: //fetch success
-        return fetch(`${server}/summoners/${name}`).then(res => res.json());
+        //return fetch(`${server}/summoners/${name}`).then(res => res.json());
+        return undefined;
       case 403: //summoner not found
         throw new Error('Summoner not found');
       default:
