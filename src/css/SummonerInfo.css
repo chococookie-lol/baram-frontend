@@ -1,6 +1,12 @@
 .profile-wrap {
-    margin: 10px auto;
     position: relative;
+    height: 96px;
+}
+
+.icon-image {
+    position: absolute;
+    left: 50%;
+    transform: translate( -50%, 0% );
 }
 
 .profileIcon {
@@ -13,9 +19,11 @@
 div.level-text {
     height: 22px;
     text-align: center;
+    margin: auto;
     position: absolute;
-    top: 95%;
+    top: 100%;
     left: 50%;
+    box-sizing: border-box;
     transform: translate( -50%, -50% );
 }
 
