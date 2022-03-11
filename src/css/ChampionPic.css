@@ -1,0 +1,10 @@
+div.champion-pic{
+    margin: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.champion-pic img{
+    height: 50px;
+    width: 50px;
+}

@@ -1,3 +1,14 @@
 div#matchData {
     clear: both;
 }
+
+li.match-row{
+    list-style: none;
+    margin: 10px 10px 0px 10px;
+}
+
+ul.match-list{
+    margin: 5px;
+    padding: 0px;
+    list-style: none;
+}

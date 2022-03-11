@@ -1,4 +1,4 @@
-import getProfileIconUrl from 'model/Ddragon';
+import {getProfileIconUrl} from 'model/Ddragon';
 import { fetchSummonerData, UserData } from '../model/Api';
 import '../css/SummonerInfo.css';
 import { Button, Col, Container, Placeholder, Row, Spinner, Stack } from 'react-bootstrap';

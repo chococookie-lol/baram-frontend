@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import * as Api from '../model/Api';
 import '../css/MatchList.css';
+import ChampionPic from './ChampionPic';
+import Kda from './Kda';
 
 const infoKeys = [
   'matchId',
@@ -16,30 +18,22 @@ const infoKeys = [
 
 interface MatchListProps {
   matchdata?: Api.MatchIds,
+  puuid?: string, 
 }
 
 export default function MatchList(props: MatchListProps) {
-  const { matchdata } = props;
+  const { matchdata, puuid } = props;
   return (
     <div id="matchData">
       {matchdata != undefined ?
         matchdata.error != undefined ?
           <div>{matchdata.error}</div>
           :
-          <table>
-            <thead>
-              <tr>
-                {infoKeys.map((k) => (
-                  <th key={k}>{k}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {matchdata.data?.map((i) => (
-                <MatchRow key={i} mid={i} />
-              ))}
-            </tbody>
-          </table>
+          <ul className='match-list'>
+            {matchdata.data?.map((i) => (
+              <MatchRow key={i} mid={i} puuid={puuid!}/>
+            ))}
+          </ul>
         :
         <div>Loading...</div>
       }
@@ -48,14 +42,14 @@ export default function MatchList(props: MatchListProps) {
 }
 
 interface MatchRowProps {
-  key: string,
   mid: string,
+  puuid: string,
 }
 
 function MatchRow(props: MatchRowProps) {
-  const [matchData, setMatchData] = useState(undefined);
+  const [matchData, setMatchData] = useState<any>();
   const [error, setError] = useState(undefined);
-  const { mid } = props;
+  const { mid, puuid } = props;
 
   useEffect(() => {
     setMatchData(undefined);
@@ -72,23 +66,27 @@ function MatchRow(props: MatchRowProps) {
 
   if (error) {
     return (
-      <tr>
-        <td>Error</td>
-      </tr>
+      <li className='match-row'>
+        <p>Error</p>
+      </li>
     );
   } else if (matchData) {
+    let summoner;
+    for(let s in matchData.participants){
+      if(matchData.participants[s].puuid == puuid)
+        summoner = matchData.participants[s];
+      }
     return (
-      <tr>
-        {infoKeys.map((k) => (
-          <td key={matchData[k]}>{matchData[k]}</td>
-        ))}
-      </tr>
+      <li className='match-row'>
+        <ChampionPic championName={summoner.championName}/>
+        <Kda k={summoner.kills} d={summoner.deaths} a={summoner.assists}/>
+      </li>
     );
   } else {
     return (
-      <tr>
-        <td>Loading...</td>
-      </tr>
+      <li className='match-row'>
+        <p>Loading...</p>
+      </li>
     );
   }
 }

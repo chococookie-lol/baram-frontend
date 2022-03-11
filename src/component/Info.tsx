@@ -5,7 +5,7 @@ import * as Api from '../model/Api';
 import { useParams } from 'react-router-dom';
 
 export default function Info() {
-  const [userData, setUserData] = useState<Api.UserData | undefined>(undefined);
+  const [userData, setUserData] = useState<Api.UserData | any>(undefined);
   const [matchIds, setMatchIds] = useState<Api.MatchIds | undefined>(undefined);
 
   const { name } = useParams<{ name: string }>();
@@ -39,10 +39,11 @@ export default function Info() {
     }
   }
 
+  
   return (
     <div id="container">
       <SummonerInfo userdata={userData} />
-      <MatchList matchdata={matchIds} />
+      <MatchList matchdata={matchIds} puuid={userData?.data.puuid} />
     </div>
   );
 }
