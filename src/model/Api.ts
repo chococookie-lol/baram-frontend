@@ -146,7 +146,7 @@ export function fetchMatchData(puuid: string) {
     method: 'POST',
   }).then(res => {
     switch (res.status) {
-      case 200:
+      case 201:
         return res.json();
       case 403:
         throw new Error('403 Error');
