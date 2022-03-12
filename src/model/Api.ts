@@ -140,3 +140,18 @@ export function getMatchDetail(matchID: string) {
     }
   });
 }
+
+export function fetchMatchData(puuid: string) {
+  return fetch(`${server}/matches/by-puuid/${puuid}`, {
+    method: 'POST',
+  }).then(res => {
+    switch (res.status) {
+      case 200:
+        return res.json();
+      case 403:
+        throw new Error('403 Error');
+      default:
+        throw new Error('Error');
+    }
+  })
+}

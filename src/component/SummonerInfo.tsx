@@ -1,5 +1,5 @@
 import { getProfileIconUrl } from 'model/Ddragon';
-import { fetchSummonerData, UserData } from '../model/Api';
+import { fetchMatchData, fetchSummonerData, UserData } from '../model/Api';
 import '../css/SummonerInfo.css';
 import { Button, Col, Container, Placeholder, Row, Spinner, Stack } from 'react-bootstrap';
 import { useState } from 'react';
@@ -19,15 +19,18 @@ export default function SummonerInfo(props: SummonerInfoProps) {
 
     setIsFetching(true);
 
-    let result;
+    let promises = [];
 
     try {
-      result = await fetchSummonerData(userdata.data.name);
-      if (result === undefined) {
-        setIsFetching(false);
-        window.location.reload();
-        return;
-      }
+      promises.push(fetchSummonerData(userdata.data.name));
+      promises.push(fetchMatchData(userdata.data.puuid));
+
+      await Promise.all(promises);
+
+      setIsFetching(false);
+      window.location.reload();
+
+      return;
     } catch (e: unknown) {
       if (e instanceof Error) {
         console.log(e.message);

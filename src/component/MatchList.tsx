@@ -64,7 +64,7 @@ function MatchRow(props: MatchRowProps) {
     );
   }
 
-  if (error) {
+  if (error || matchData?.participants === undefined || matchData.teams === undefined) {
     return (
       <li className='match-row'>
         <p>Error</p>
