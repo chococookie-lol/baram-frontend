@@ -1,0 +1,45 @@
+div.champion-pic{
+    margin: 0px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+div.champion-wrapper{
+    position: relative;
+    width: 100px;
+    height: 80px;
+}
+
+.champion-pic img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    object-fit: none;
+    height: inherit;
+    width: inherit;
+}
+
+.gradient{
+    position: absolute;
+    height: inherit;
+    width: inherit;
+    top: 0;
+    left: 0;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.2) 80%, rgba(255,255,255,1) 100%);
+}
+
+div.level{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.level p{
+    padding: 1px 5px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 1);
+    background-color: rgba(68, 68, 68, 0.5);
+
+}

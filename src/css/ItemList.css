@@ -1,0 +1,27 @@
+div.item-list {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    width: 100px;
+}
+
+.item-list ul {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.item-list li {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-color: rgb(219, 219, 219);
+    padding: 0;
+    vertical-align: top;
+    margin: 1px;
+}
+
+.item-list img {
+    width: inherit;
+    height: inherit;
+}

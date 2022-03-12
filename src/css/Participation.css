@@ -1,0 +1,13 @@
+div.participation {
+    display: inline-block;
+    margin: 0 5px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.participation p {
+    margin: 0px;
+    color: black;
+    font-size: 15px;
+}

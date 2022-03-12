@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import * as Api from '../model/Api';
 import '../css/MatchList.css';
-import ChampionPic from './ChampionPic';
+import ChampionInfo from './ChampionInfo';
 import Kda from './Kda';
+import Participation from './Participation';
+import ItemList from './ItemList';
 
 const infoKeys = [
   'matchId',
@@ -78,13 +80,17 @@ function MatchRow(props: MatchRowProps) {
         team = summoner.teamId === 100 ? matchData.teams[0] : matchData.teams[1];
       }
     }
-    if (summoner === undefined || team === undefined) {
+    if (!summoner || !team) {
       return (<></>);
     }
+
     return (
       <li className={'match-row ' + (team.win ? 'win' : 'lose')}>
-        <ChampionPic championName={summoner.championName} />
+        <ChampionInfo championName={summoner.championName} level={summoner.champLevel}/>
         <Kda k={summoner.kills} d={summoner.deaths} a={summoner.assists} kda={summoner.kda} />
+        <Participation gold={Number(summoner.goldEarned!)} killParticipation={summoner.killParticipation}
+          deal={Number(summoner.totalDamageDealtToChampions!)} cs={Number(summoner.totalMinionsKilled!)}/>
+        <ItemList items={[summoner.item0, summoner.item1, summoner.item2, summoner.item3, summoner.item4, summoner.item5]}/>
       </li>
     );
   } else {

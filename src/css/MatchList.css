@@ -2,8 +2,7 @@ div#matchData {
     clear: both;
 }
 
-li.match-row{
-    list-style: none;
+li.match-row {
     margin: 10px 10px 10px 10px;
 }
 
@@ -15,8 +14,7 @@ li.match-row.lose {
     border: 2px solid indianred;
 }
 
-ul.match-list{
+ul.match-list {
     margin: 5px;
     padding: 0px;
-    list-style: none;
 }
