@@ -1,9 +1,8 @@
-import {getProfileIconUrl} from 'model/Ddragon';
+import { getProfileIconUrl } from 'model/Ddragon';
 import { fetchSummonerData, UserData } from '../model/Api';
 import '../css/SummonerInfo.css';
 import { Button, Col, Container, Placeholder, Row, Spinner, Stack } from 'react-bootstrap';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 interface SummonerInfoProps {
   userdata?: UserData
@@ -13,13 +12,10 @@ export default function SummonerInfo(props: SummonerInfoProps) {
   const { userdata } = props;
   const [isFetching, setIsFetching] = useState(false);
 
-  const navigate = useNavigate();
-
   async function onButtonClick() {
     if (userdata === undefined || userdata.data === undefined) {
       return;
     }
-
 
     setIsFetching(true);
 

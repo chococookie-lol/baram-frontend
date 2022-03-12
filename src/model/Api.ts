@@ -1,8 +1,7 @@
 //import key from './Key';
-import * as example from './ApiExample';
 
-const server = 'http://api.baram.ga';
-//const server = '/api';
+//const server = 'http://api.baram.ga';
+const server = '/api';
 
 /*
 모든 api call은 Promise를 리턴한다.
@@ -26,8 +25,64 @@ export interface SummonerData {
 }
 
 export interface MatchIds {
-  data?: [string],
+  data?: string[],
   error?: string,
+}
+
+export interface MatchData {
+  matchId: string,
+  gameCreation: string,
+  gameDuration: string,
+  gameEndTimestamp: string,
+  gameId: string,
+  gameMode: string,
+  gameName: string,
+  gameStartTimestamp: string,
+  gameType: string,
+  gameVersion: string,
+  mapId: number,
+  platformId: string,
+  queueId: number,
+  tournamentCode: string,
+  participants: ParticipantsData[],
+  teams: TeamsData[],
+}
+
+export interface ParticipantsData {
+  puuid: string,
+  goldEarned: string,
+  totalMinionsKilled: string,
+  kills: number,
+  deaths: number,
+  assists: number,
+  kda: number,
+  killParticipation: number,
+  championId: number,
+  championName: string,
+  champLevel: number,
+  totalDamageDealtToChampions: string,
+  summoner1Id: number,
+  summoner2Id: number,
+  item0: number,
+  item1: number,
+  item2: number,
+  item3: number,
+  item4: number,
+  item5: number,
+  item6: number,
+  summonerName: string,
+  teamId: number,
+}
+
+export interface TeamsData {
+  matchId: string,
+  teamId: number,
+  win: number,
+  totalKill: number,
+  totalDeath: number,
+  totalAssist: number,
+  gameEndedInSurrender: number,
+  gameEndedInEarlySurrender: number,
 }
 
 export function getSummonerData(name: string) {

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Api from '../model/Api';
 import '../css/MatchList.css';
 import ChampionPic from './ChampionPic';
 import Kda from './Kda';
-import { match } from 'assert';
 
 const infoKeys = [
   'matchId',
@@ -48,7 +47,7 @@ interface MatchRowProps {
 }
 
 function MatchRow(props: MatchRowProps) {
-  const [matchData, setMatchData] = useState<any>();
+  const [matchData, setMatchData] = useState<Api.MatchData>();
   const [error, setError] = useState(undefined);
   const { mid, puuid } = props;
 
@@ -71,18 +70,21 @@ function MatchRow(props: MatchRowProps) {
         <p>Error</p>
       </li>
     );
-  } else if (matchData) {
-    let summoner, team;
+  } else if (matchData !== undefined && matchData.participants !== [] && matchData.teams !== []) {
+    let summoner: Api.ParticipantsData | undefined, team: Api.TeamsData | undefined;
     for (let s in matchData.participants) {
       if (matchData.participants[s].puuid == puuid) {
         summoner = matchData.participants[s];
-        team = summoner.teamId === 100 ? matchData.team[0] : matchData.team[1];
+        team = summoner.teamId === 100 ? matchData.teams[0] : matchData.teams[1];
       }
+    }
+    if (summoner === undefined || team === undefined) {
+      return (<></>);
     }
     return (
       <li className={'match-row ' + (team.win ? 'win' : 'lose')}>
         <ChampionPic championName={summoner.championName} />
-        <Kda k={summoner.kills} d={summoner.deaths} a={summoner.assists} />
+        <Kda k={summoner.kills} d={summoner.deaths} a={summoner.assists} kda={summoner.kda} />
       </li>
     );
   } else {
