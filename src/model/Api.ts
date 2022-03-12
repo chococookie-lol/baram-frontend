@@ -1,7 +1,7 @@
 //import key from './Key';
 
-//const server = 'http://api.baram.ga';
-const server = '/api';
+const server = 'http://api.baram.ga';
+//const server = '/api';
 
 /*
 모든 api call은 Promise를 리턴한다.
