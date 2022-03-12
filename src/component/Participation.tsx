@@ -1,4 +1,5 @@
 import '../css/Participation.css';
+import ProgressBar from './ProgressBar';
 
 interface ParticipationProps {
   gold: number,
@@ -13,16 +14,21 @@ export default function Participation(props: ParticipationProps) {
       <table>
         <tbody>
           <tr>
-            <td>골드:</td>
-            <td>{props.gold}</td>
-            <td>킬 관여:</td>
-            <td>{props.killParticipation.toFixed(2)}</td>
+            <td className='val'>{props.cs}</td>
+            <td className='key'><p>CS</p></td>
           </tr>
           <tr>
-            <td>딜:</td>
-            <td>{props.deal}</td>
-            <td>cs:</td>
-            <td>{props.cs}</td>
+            <td className='val'>{props.gold}</td>
+            <td className='key'><p>GOLD</p></td>
+          </tr>
+          <tr>
+            <td className='val'>{props.deal}</td>
+            <td className='key'><p>DMG</p></td>
+          </tr>
+
+          <tr>
+            <td colSpan={2}>
+              <ProgressBar progress={Math.round(props.killParticipation*100)}/></td>
           </tr>
 
         </tbody>

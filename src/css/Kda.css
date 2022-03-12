@@ -1,19 +1,19 @@
-div.kda{
+div.kda {
     display: inline-block;
     position: relative;
-    padding: 10px;
     text-align: center;
     vertical-align: middle;
+    width: 100px;
 }
 
-.kda-row p{
+.kda-row p {
     margin: 0 2px;
     display: inline-block;
     color: black;
     font-size: 15px;
 }
 
-.kda-average p{
+.kda-average p {
     color: gray;
     margin: 0;
     display: inline-block;

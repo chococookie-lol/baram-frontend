@@ -1,0 +1,21 @@
+.progress-bar {
+    position: relative;
+    background-color: rgb(116, 116, 116);
+    height: 18px;
+}
+
+.progress-bar .bar {
+    height: inherit;
+    position: absolute;
+    left: 0;
+    background-color: rgb(51, 100, 172);
+    max-width: 100%;
+}
+
+.progress-bar p {
+    position: relative;
+    height: inherit;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+}

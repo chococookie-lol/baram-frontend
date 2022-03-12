@@ -1,13 +1,33 @@
 div.participation {
     display: inline-block;
     margin: 0 5px;
+    padding: 0;
     position: relative;
     text-align: center;
     vertical-align: middle;
+    font-size: 12px;
 }
 
-.participation p {
-    margin: 0px;
-    color: black;
-    font-size: 15px;
+.participation td.key {
+    text-align: center;
+    padding: 0;
+    margin: 0;
 }
+
+.participation td.val {
+    width: 50px;
+    text-align: right;
+}
+
+progress.participation {
+    background-color: black;
+}
+
+.participation .key p {
+    padding: 0 5px;
+    margin: 0 5px;
+    color: white;
+    background-color: gray;
+}
+
+.participation p.kill {}
