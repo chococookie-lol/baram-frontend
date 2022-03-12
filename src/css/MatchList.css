@@ -4,7 +4,15 @@ div#matchData {
 
 li.match-row{
     list-style: none;
-    margin: 10px 10px 0px 10px;
+    margin: 10px 10px 10px 10px;
+}
+
+li.match-row.win {
+    border: 2px solid cornflowerblue;
+}
+
+li.match-row.lose {
+    border: 2px solid indianred;
 }
 
 ul.match-list{

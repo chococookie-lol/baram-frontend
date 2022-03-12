@@ -3,6 +3,7 @@ import * as Api from '../model/Api';
 import '../css/MatchList.css';
 import ChampionPic from './ChampionPic';
 import Kda from './Kda';
+import { match } from 'assert';
 
 const infoKeys = [
   'matchId',
@@ -18,7 +19,7 @@ const infoKeys = [
 
 interface MatchListProps {
   matchdata?: Api.MatchIds,
-  puuid?: string, 
+  puuid?: string,
 }
 
 export default function MatchList(props: MatchListProps) {
@@ -31,7 +32,7 @@ export default function MatchList(props: MatchListProps) {
           :
           <ul className='match-list'>
             {matchdata.data?.map((i) => (
-              <MatchRow key={i} mid={i} puuid={puuid!}/>
+              <MatchRow key={i} mid={i} puuid={puuid!} />
             ))}
           </ul>
         :
@@ -71,15 +72,17 @@ function MatchRow(props: MatchRowProps) {
       </li>
     );
   } else if (matchData) {
-    let summoner;
-    for(let s in matchData.participants){
-      if(matchData.participants[s].puuid == puuid)
+    let summoner, team;
+    for (let s in matchData.participants) {
+      if (matchData.participants[s].puuid == puuid) {
         summoner = matchData.participants[s];
+        team = summoner.teamId === 100 ? matchData.team[0] : matchData.team[1];
       }
+    }
     return (
-      <li className='match-row'>
-        <ChampionPic championName={summoner.championName}/>
-        <Kda k={summoner.kills} d={summoner.deaths} a={summoner.assists}/>
+      <li className={'match-row ' + (team.win ? 'win' : 'lose')}>
+        <ChampionPic championName={summoner.championName} />
+        <Kda k={summoner.kills} d={summoner.deaths} a={summoner.assists} />
       </li>
     );
   } else {
