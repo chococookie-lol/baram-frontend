@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import * as Api from '../model/Api';
 import '../css/MatchList.css';
 import ChampionInfo from './ChampionInfo';
@@ -23,8 +23,29 @@ interface MatchListProps {
   puuid?: string,
 }
 
+interface MatchListRef{
+  load: number,
+  last: number,
+}
+
 export default function MatchList(props: MatchListProps) {
   const { matchdata, puuid } = props;
+  const [load, setLoad] = useState<number>(0);
+  const ref = useRef<MatchListRef>({load:0, last:0});
+
+  async function loadMore(){
+    //todo
+  }
+
+  function loaded(time: number){
+    ref.current.load++;
+    if(ref.current.last > time || ref.current.last == 0){
+      //update last time
+      ref.current.last = time;
+    }
+    setLoad(ref.current.load);
+  }
+
   return (
     <div id="matchData">
       {matchdata != undefined ?
@@ -33,8 +54,10 @@ export default function MatchList(props: MatchListProps) {
           :
           <ul className='match-list'>
             {matchdata.data?.map((i) => (
-              <MatchRow key={i} mid={i} puuid={puuid!} />
+              <MatchRow key={i+puuid} mid={i} load={loaded} puuid={puuid!} />
             ))}
+            {load >= matchdata!.data!.length ? <li style={{textAlign:'center'}}><button onClick={loadMore}>더보기</button></li> : ''}
+            
           </ul>
         :
         <div>Loading...</div>
@@ -46,6 +69,7 @@ export default function MatchList(props: MatchListProps) {
 interface MatchRowProps {
   mid: string,
   puuid: string,
+  load: Function,
 }
 
 function MatchRow(props: MatchRowProps) {
@@ -61,7 +85,10 @@ function MatchRow(props: MatchRowProps) {
 
   function refresh() {
     Api.getMatchDetail(props.mid).then(
-      (res) => setMatchData(res),
+      (res) => {
+        setMatchData(res);
+        props.load(res.gameEndTimestamp);
+      },
       (err) => setError(err)
     );
   }

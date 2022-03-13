@@ -3,6 +3,7 @@ import SummonerInfo from './SummonerInfo';
 import MatchList from './MatchList';
 import * as Api from '../model/Api';
 import { useParams } from 'react-router-dom';
+import { match } from 'assert';
 
 export default function Info() {
   const [userData, setUserData] = useState<Api.UserData | undefined>(undefined);
@@ -20,7 +21,7 @@ export default function Info() {
     let userdata;
     let matchdata;
 
-    if (name === undefined) return;
+    if (!name) return;
 
     try {
       userdata = await Api.getSummonerData(name);
