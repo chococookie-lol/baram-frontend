@@ -155,3 +155,31 @@ export function fetchMatchData(puuid: string) {
     }
   })
 }
+
+export function getMatchesBySummonerAfter(puuid: string, after: number){
+  return fetch(`${server}/matches/by-puuid/${puuid}?after=${after}`).then((res) => {
+    switch (res.status) {
+      case 200: //ok
+        return res.json();
+      case 404: //summoner(matches) not found
+        throw new Error('Match not found');
+      default:
+        throw new Error('Error');
+    }
+  });
+}
+
+export function fetchMatchDataAfter(puuid: string, after: number){
+  return fetch(`${server}/matches/by-puuid/${puuid}?after=${after}`, {
+    method: 'POST',
+  }).then(res => {
+    switch (res.status) {
+      case 201:
+        return res.json();
+      case 403:
+        throw new Error('403 Error');
+      default:
+        throw new Error('Error');
+    }
+  })
+}
