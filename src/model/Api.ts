@@ -1,7 +1,7 @@
 //import key from './Key';
 
-const server = 'http://api.baram.ga';
-// const server = '/api';
+//const server = 'http://api.baram.ga';
+ const server = '/api';
 
 /*
 모든 api call은 Promise를 리턴한다.
@@ -90,7 +90,7 @@ export function getSummonerData(name: string) {
     .then((res) => {
       switch (res.status) {
         case 404: //summoner not found
-          return fetchSummonerData(name);
+          return undefined;
         case 200: // ok
           return res.json();
         default:
@@ -115,13 +115,13 @@ export function fetchSummonerData(name: string) {
   });
 }
 
-export function getMatchesBySummoner(puuid: string) {
+export function getMatchesByPuuid(puuid: string) {
   return fetch(`${server}/matches/by-puuid/${puuid}`).then((res) => {
     switch (res.status) {
       case 200: //ok
         return res.json();
       case 404: //summoner(matches) not found
-        throw new Error('Match not found');
+        return undefined;
       default:
         throw new Error('Error');
     }

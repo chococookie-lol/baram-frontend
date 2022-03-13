@@ -1,0 +1,20 @@
+.alert-container {
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 10px;
+}
+
+.spinner-container {
+    vertical-align: middle;
+}
+
+.alert-loading {
+    display: inline-block;
+    width: 96%;
+}
+
+.loading-text {
+    display: inline-block;
+    font-size: larger;
+    margin-bottom: 10px;
+}
