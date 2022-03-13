@@ -29,12 +29,32 @@ interface MatchListRef{
 }
 
 export default function MatchList(props: MatchListProps) {
-  const { matchdata, puuid } = props;
-  const [load, setLoad] = useState<number>(0);
+  const {puuid} = props;
+  const error = props.matchdata!.error;
+  const [matchdata, setMatchData] = useState<string[]>(props.matchdata!.data!);
+  const [canloadMore, setCanLoadMore] = useState<boolean>(false);
   const ref = useRef<MatchListRef>({load:0, last:0});
 
   async function loadMore(){
-    //todo
+    setCanLoadMore(false);
+    try{
+      let res:string[] = await Api.getMatchesBySummonerAfter(puuid!, ref.current.last);
+      setMatchData([...matchdata, ...res]);
+    }catch(err){
+      await fetchMore();
+    }
+    setCanLoadMore(true);
+  }
+
+  async function fetchMore(){
+    try{
+      await Api.fetchMatchDataAfter(puuid!, ref.current.last);
+      let res:string[] = await Api.getMatchesBySummonerAfter(puuid!, ref.current.last);
+      setMatchData([...matchdata, ...res]);
+    }catch(err){
+      console.log(err);
+    }
+    setCanLoadMore(true);
   }
 
   function loaded(time: number){
@@ -43,20 +63,20 @@ export default function MatchList(props: MatchListProps) {
       //update last time
       ref.current.last = time;
     }
-    setLoad(ref.current.load);
+    setCanLoadMore(ref.current.load >= matchdata!.length);
   }
 
   return (
     <div id="matchData">
       {matchdata != undefined ?
-        matchdata.error != undefined ?
-          <div>{matchdata.error}</div>
+        error != undefined ?
+          <div>{error}</div>
           :
           <ul className='match-list'>
-            {matchdata.data?.map((i) => (
+            {matchdata.map((i) => (
               <MatchRow key={i+puuid} mid={i} load={loaded} puuid={puuid!} />
             ))}
-            {load >= matchdata!.data!.length ? <li style={{textAlign:'center'}}><button onClick={loadMore}>더보기</button></li> : ''}
+            {canloadMore ? <li style={{textAlign:'center'}}><button onClick={loadMore}>더보기</button></li> : ''}
             
           </ul>
         :
