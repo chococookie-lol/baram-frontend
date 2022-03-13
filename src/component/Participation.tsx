@@ -2,13 +2,19 @@ import '../css/Participation.css';
 import ProgressBar from './ProgressBar';
 
 interface ParticipationProps {
-  gold: number,
-  killParticipation: number,
-  deal: number,
-  cs: number,
+  gold?: number,
+  killParticipation?: number,
+  deal?: number,
+  cs?: number,
+  loading?: boolean,
 }
 
 export default function Participation(props: ParticipationProps) {
+  if(props.loading){
+    return(<div className='participation loading'>
+      <div style={{width:'inherit', height:'65px'}}/>
+    </div>)
+  }
   return (
     <div className='participation'>
       <table>
@@ -28,7 +34,7 @@ export default function Participation(props: ParticipationProps) {
 
           <tr>
             <td colSpan={2}>
-              <ProgressBar progress={Math.round(props.killParticipation*100)}/></td>
+              <ProgressBar progress={Math.round(props.killParticipation!*100)}/></td>
           </tr>
 
         </tbody>

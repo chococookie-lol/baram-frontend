@@ -1,17 +1,12 @@
 //import key from './Key';
 
-//const server = 'http://api.baram.ga';
- const server = '/api';
+const server = 'http://api.baram.ga';
+// const server = '/api';
 
 /*
 모든 api call은 Promise를 리턴한다.
 에러처리는 api 밖에서
 */
-
-export interface UserData {
-  data?: SummonerData,
-  error?: string,
-}
 
 export interface SummonerData {
   accountId: string,
@@ -22,11 +17,6 @@ export interface SummonerData {
   revisionData: string,
   summonerLevel: string,
   recentUpdate: string,
-}
-
-export interface MatchIds {
-  data?: string[],
-  error?: string,
 }
 
 export interface MatchData {
@@ -84,6 +74,8 @@ export interface TeamsData {
   gameEndedInSurrender: number,
   gameEndedInEarlySurrender: number,
 }
+
+const blank_json = {};
 
 export function getSummonerData(name: string) {
   return fetch(`${server}/summoners/${name}`)

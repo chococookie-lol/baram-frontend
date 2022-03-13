@@ -19,7 +19,7 @@ const infoKeys = [
 ];
 
 interface MatchListProps {
-  matchdata?: Api.MatchIds,
+  matchdata?: string[],
   puuid?: string,
 }
 
@@ -30,13 +30,14 @@ interface MatchListRef{
 
 export default function MatchList(props: MatchListProps) {
   const {puuid} = props;
-  const error = props.matchdata!.error;
-  const [matchdata, setMatchData] = useState<string[]>(props.matchdata!.data!);
+  const [matchdata, setMatchData] = useState<string[]>(props.matchdata!);
   const [canloadMore, setCanLoadMore] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const ref = useRef<MatchListRef>({load:0, last:0});
 
   async function loadMore(){
     setCanLoadMore(false);
+    setLoading(true);
     try{
       let res:string[] = await Api.getMatchesBySummonerAfter(puuid!, ref.current.last);
       setMatchData([...matchdata, ...res]);
@@ -44,7 +45,12 @@ export default function MatchList(props: MatchListProps) {
       await fetchMore();
     }
     setCanLoadMore(true);
+    setLoading(false);
   }
+
+  useEffect(()=>{
+    setMatchData(props!.matchdata!);
+  },[props.matchdata])
 
   async function fetchMore(){
     try{
@@ -54,7 +60,8 @@ export default function MatchList(props: MatchListProps) {
     }catch(err){
       console.log(err);
     }
-    setCanLoadMore(true);
+    // setCanLoadMore(true);
+    // setLoading(false);
   }
 
   function loaded(time: number){
@@ -68,34 +75,32 @@ export default function MatchList(props: MatchListProps) {
 
   return (
     <div id="matchData">
-      {matchdata != undefined ?
-        error != undefined ?
-          <div>{error}</div>
-          :
-          <ul className='match-list'>
-            {matchdata.map((i) => (
-              <MatchRow key={i+puuid} mid={i} load={loaded} puuid={puuid!} />
-            ))}
-            {canloadMore ? <li style={{textAlign:'center'}}><button onClick={loadMore}>더보기</button></li> : ''}
-            
-          </ul>
+      <ul className='match-list'>
+      {matchdata?
+        matchdata.map((i) => (
+          <MatchRow key={i+puuid} mid={i} load={loaded} puuid={puuid!} />
+        ))
         :
-        <div>Loading...</div>
+        <MatchRow loading={true}/>
       }
+      {canloadMore ? <li style={{textAlign:'center'}}><button onClick={loadMore}>더보기</button></li> : ''}
+      {loading ? <MatchRow loading={true}/> : ''}
+      </ul>
     </div>
   );
 }
 
 interface MatchRowProps {
-  mid: string,
-  puuid: string,
-  load: Function,
+  mid?: string,
+  puuid?: string,
+  load?: Function,
+  loading?: boolean,
 }
 
 function MatchRow(props: MatchRowProps) {
   const [matchData, setMatchData] = useState<Api.MatchData>();
   const [error, setError] = useState(undefined);
-  const { mid, puuid } = props;
+  const { mid, puuid, loading } = props;
 
   useEffect(() => {
     setMatchData(undefined);
@@ -104,19 +109,23 @@ function MatchRow(props: MatchRowProps) {
   }, [mid]);
 
   function refresh() {
-    Api.getMatchDetail(props.mid).then(
+    Api.getMatchDetail(props.mid!).then(
       (res) => {
         setMatchData(res);
-        props.load(res.gameEndTimestamp);
+        props.load!(res.gameEndTimestamp);
       },
       (err) => setError(err)
     );
   }
 
-  if (error || matchData?.participants === undefined || matchData.teams === undefined) {
+  if (loading || matchData?.participants === undefined || matchData.teams === undefined) {
+    //loading
     return (
-      <li className='match-row'>
-        <p>Error</p>
+      <li className='match-row neutral'>
+        <ChampionInfo loading={true}/>
+        <Kda loading={true}/>
+        <Participation loading={true}/>
+        <ItemList loading={true}/>
       </li>
     );
   } else if (matchData !== undefined && matchData.participants !== [] && matchData.teams !== []) {
@@ -127,8 +136,8 @@ function MatchRow(props: MatchRowProps) {
         team = summoner.teamId === 100 ? matchData.teams[0] : matchData.teams[1];
       }
     }
-    if (!summoner || !team) {
-      return (<></>);
+    if (error || !summoner || !team) {
+      return (<>error</>);
     }
 
     return (
@@ -147,4 +156,8 @@ function MatchRow(props: MatchRowProps) {
       </li>
     );
   }
+}
+
+function loadingMatchRow(){
+  
 }

@@ -1,11 +1,12 @@
 import { getProfileIconUrl } from 'model/Ddragon';
-import { fetchMatchData, fetchSummonerData, UserData } from '../model/Api';
+import { fetchMatchData, fetchSummonerData } from '../model/Api';
 import '../css/SummonerInfo.css';
+import * as Api from '../model/Api';
 import { Button, Col, Container, Placeholder, Row, Spinner, Stack } from 'react-bootstrap';
 import { useState } from 'react';
 
 interface SummonerInfoProps {
-  userdata?: UserData
+  userdata?: Api.SummonerData,
 }
 
 export default function SummonerInfo(props: SummonerInfoProps) {
@@ -13,7 +14,7 @@ export default function SummonerInfo(props: SummonerInfoProps) {
   const [isFetching, setIsFetching] = useState(false);
 
   async function onButtonClick() {
-    if (userdata === undefined || userdata.data === undefined) {
+    if (!userdata) {
       return;
     }
 
@@ -22,8 +23,8 @@ export default function SummonerInfo(props: SummonerInfoProps) {
     let promises = [];
 
     try {
-      promises.push(fetchSummonerData(userdata.data.name));
-      promises.push(fetchMatchData(userdata.data.puuid));
+      promises.push(fetchSummonerData(userdata.name!));
+      promises.push(fetchMatchData(userdata.puuid!));
 
       await Promise.all(promises);
 
@@ -39,10 +40,30 @@ export default function SummonerInfo(props: SummonerInfoProps) {
     }
   }
 
-  if (userdata?.error !== undefined) {
+  if (!userdata) {
     return (
+      //loading
       <div id="userData">
-        <div>{userdata.error}</div>
+        <Stack gap={3}>
+          <div></div>
+          <Container>
+            <Row className='justify-content-start'>
+              <Col xxl={1} md={2} xs={5}>
+                <div className='profile-wrap'>
+                  <div className='icon-image profileIcon loading'/>
+                </div>
+              </Col>
+              <Col xxl={11} md={10} xs={7}>
+                <Stack gap={2}>
+                  <div className='loading' style={{height:'1.2em', width:'200px'}}/>
+                  <div className='loading' style={{height:'1.2em', width:'180px'}}/>
+                  <div className='loading' style={{height:'1.2em', width:'150px'}}/>
+                </Stack>
+              </Col>
+            </Row>
+          </Container>
+          <div></div>
+        </Stack>
       </div>
     )
   } else {
@@ -59,10 +80,10 @@ export default function SummonerInfo(props: SummonerInfoProps) {
                     :
                     <div className='profile-wrap'>
                       <div className='icon-image'>
-                        <img className='profileIcon' src={getProfileIconUrl(String(userdata?.data?.profileIconId))} />
+                        <img className='profileIcon' src={getProfileIconUrl(String(userdata.profileIconId))} />
                       </div>
                       <div className='level-text'>
-                        <p className='level-text'>{userdata?.data?.summonerLevel}</p>
+                        <p className='level-text'>{userdata.summonerLevel}</p>
                       </div>
                     </div>
                 }
@@ -70,10 +91,10 @@ export default function SummonerInfo(props: SummonerInfoProps) {
               <Col xxl={11} md={10} xs={7}>
                 <Stack gap={2}>
                   {
-                    userdata === undefined ?
+                    !userdata ?
                       <Placeholder xs={2} size='lg' />
                       :
-                      <span style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{userdata?.data?.name}</span>
+                      <span style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{userdata.name}</span>
                   }
                   <div>
                     <Button variant='outline-primary' size='sm' onClick={onButtonClick} disabled={isFetching}>
@@ -90,16 +111,12 @@ export default function SummonerInfo(props: SummonerInfoProps) {
                     </Button>
                   </div>
                   {
-                    userdata === undefined ?
-                      <Placeholder xs={4} />
+                    !userdata ? <Placeholder xs={4} />
                       :
-                      userdata.data === undefined ?
-                        <Placeholder xs={4} />
+                      !userdata.recentUpdate ?
+                        <span style={{ fontSize: '0.9em' }}>갱신 기록 없음</span>
                         :
-                        userdata.data.recentUpdate === null ?
-                          <span style={{ fontSize: '0.9em' }}>갱신 기록 없음</span>
-                          :
-                          <span style={{ fontSize: '0.9em' }}>최근 갱신: {new Date(Number(userdata.data.recentUpdate)).toLocaleDateString()}</span>
+                        <span style={{ fontSize: '0.9em' }}>최근 갱신: {new Date(Number(userdata.recentUpdate)).toLocaleDateString()}</span>
                   }
                 </Stack>
               </Col>

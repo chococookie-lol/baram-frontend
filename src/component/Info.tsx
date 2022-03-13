@@ -3,13 +3,15 @@ import SummonerInfo from './SummonerInfo';
 import MatchList from './MatchList';
 import * as Api from '../model/Api';
 import { useParams } from 'react-router-dom';
-import { Alert, Spinner } from 'react-bootstrap';
+import { Alert, Collapse} from 'react-bootstrap';
+import RippleSpinner from './RippleSpinner';
 import '../css/Info.css';
 
 export default function Info() {
-  const [userData, setUserData] = useState<Api.UserData | undefined>(undefined);
-  const [matchIds, setMatchIds] = useState<Api.MatchIds | undefined>(undefined);
-  const [isErrors, setIsErrors] = useState<boolean>(false);
+  const [userData, setUserData] = useState<Api.SummonerData | undefined>(undefined);
+  const [matchIds, setMatchIds] = useState<string[] | undefined>(undefined);
+  const [error, setError] = useState<unknown>(undefined);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const { name } = useParams<{ name: string }>();
 
@@ -22,61 +24,53 @@ export default function Info() {
   async function refresh() {
     let userdata;
     let matchdata;
+    setLoading(true);
 
     if (!name) return;
 
     try {
       userdata = await Api.getSummonerData(name);
-      if (userdata === undefined) {
+      if (!userdata) {
         await Api.fetchSummonerData(name);
         userdata = await Api.getSummonerData(name);
       }
-      setUserData({ data: userdata });
+      setUserData(userdata);
       matchdata = await Api.getMatchesByPuuid(userdata.puuid);
-      if (matchdata === undefined) {
+      if (!matchdata) {
         await Api.fetchMatchData(userdata.puuid);
         matchdata = await Api.getMatchesByPuuid(userdata.puuid);
       }
-      setMatchIds({ data: matchdata });
+      setMatchIds(matchdata);
     } catch (e: unknown) {
       if (e instanceof Error) {
-        setIsErrors(true);
-        if (!matchdata) {
-          setMatchIds({ error: e.message });
-        }
-        if (!userdata) {
-          setUserData({ error: e.message })
-        }
+        setError(e);
       }
     }
+
+    setLoading(false);
   }
 
-  if (isErrors) {
+  if (error) {
     return (
       <div>
         <p>userData or matchIds is undefined</p>
       </div>
     )
   }
-  if (userData !== undefined && userData.data !== undefined && matchIds !== undefined) {
-    return (
-      <div id="container">
+  return (
+    <div id="container">
+      <Collapse in={loading}>
+        <div className='alert-container'>
+          <Alert className='alert-loading' variant='primary'>
+              <RippleSpinner/>
+              <p className='loading-text'> 소환사 정보를 가져오는 중...</p>
+          </Alert>
+        </div>
+      </Collapse>
+      <div>
         <SummonerInfo userdata={userData} />
-        <MatchList matchdata={matchIds} puuid={userData.data.puuid} />
+        <MatchList matchdata={matchIds} puuid={userData?.puuid} />
       </div>
-    );
-  } else {
-    return (
-      <div className='alert-container'>
-        <Alert className='alert-loading' variant='primary'>
-          <div className='spinner-container'>
-            <Spinner animation='border' variant='primary'>
-              <span className='visually-hidden'>Loading...</span>
-            </Spinner>
-            <p className='loading-text'> 소환사 정보를 가져오는 중...</p>
-          </div>
-        </Alert>
-      </div>
-    )
-  }
+    </div>
+  );
 }

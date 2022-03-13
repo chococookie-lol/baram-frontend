@@ -13,3 +13,8 @@ li,
 ul {
     list-style: none;
 }
+
+.loading,
+.loading * {
+    background-color: rgb(241, 241, 241);
+}

@@ -4,17 +4,17 @@
     margin-top: 10px;
 }
 
-.spinner-container {
-    vertical-align: middle;
-}
-
 .alert-loading {
     display: inline-block;
     width: 96%;
 }
 
+.spinner-border.text-primary {
+    margin: 0;
+}
+
 .loading-text {
     display: inline-block;
     font-size: larger;
-    margin-bottom: 10px;
+    margin: 0;
 }
