@@ -1,5 +1,6 @@
 import { getItemPicUrl } from 'model/Ddragon';
 import '../css/ItemList.css';
+import LazyImage from './LazyImage';
 
 interface ItemListProps {
   items?: Array<number>
@@ -23,7 +24,7 @@ export default function ItemList(props: ItemListProps) {
   return (<div className='item-list'>
     <ul>
       {props.items!.map((i:number) => {
-        return <li className='item'>{i == 0 ? '' : <img src={getItemPicUrl(i)}/>}</li>
+        return <li className='item'>{i == 0 ? '' : <LazyImage className='item-list-item' src={getItemPicUrl(i)}/>}</li>
       })}
     </ul>
   </div>)

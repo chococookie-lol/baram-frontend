@@ -1,5 +1,6 @@
 import { getChampionPicUrl } from '../model/Ddragon';
 import '../css/ChampionInfo.css';
+import LazyImage from './LazyImage';
 
 interface ChampionInfoProps {
   championName?: string,
@@ -18,7 +19,7 @@ export default function ChampionInfo(props: ChampionInfoProps) {
   }
   return (<div className='champion-pic'>
     <div className='champion-wrapper'>
-      <img src={getChampionPicUrl(props.championName!)} />
+        <LazyImage className='champion-pic-container' src={getChampionPicUrl(props.championName!)} />
       <div className='gradient'></div>
       <div className='level'>
         <p>{props.level}</p>

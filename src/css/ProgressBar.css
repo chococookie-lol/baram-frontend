@@ -6,9 +6,19 @@
 
 .progress-bar-static .bar {
     height: inherit;
+    width: 100%;
     position: absolute;
     left: 0;
     background-color: rgb(51, 100, 172);
+    max-width: 100%;
+    animation-duration: 1s;
+    animation-name: grow;
+}
+
+div.bar-container {
+    height: inherit;
+    position: absolute;
+    left: 0;
     max-width: 100%;
 }
 
@@ -20,4 +30,13 @@
     vertical-align: middle;
     font-size: 12px;
     color: white;
+}
+
+@keyframes grow {
+    from {
+        width: 0%
+    }
+    to {
+        width: 100%;
+    }
 }

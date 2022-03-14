@@ -41,11 +41,11 @@ export default function MatchList(props: MatchListProps) {
     try{
       let res:string[] = await Api.getMatchesBySummonerAfter(puuid!, ref.current.last);
       setMatchData([...matchdata, ...res]);
+      setCanLoadMore(true);
+      setLoading(false);
     }catch(err){
       await fetchMore();
     }
-    setCanLoadMore(true);
-    setLoading(false);
   }
 
   useEffect(()=>{
@@ -57,11 +57,13 @@ export default function MatchList(props: MatchListProps) {
       await Api.fetchMatchDataAfter(puuid!, ref.current.last);
       let res:string[] = await Api.getMatchesBySummonerAfter(puuid!, ref.current.last);
       setMatchData([...matchdata, ...res]);
+      setCanLoadMore(true);
+      setLoading(false);
     }catch(err){
       console.log(err);
+      setCanLoadMore(false);
+      setLoading(false);
     }
-    // setCanLoadMore(true);
-    // setLoading(false);
   }
 
   function loaded(time: number){
@@ -84,7 +86,7 @@ export default function MatchList(props: MatchListProps) {
         <MatchRow loading={true}/>
       }
       {canloadMore ? <li style={{textAlign:'center'}}><button onClick={loadMore}>더보기</button></li> : ''}
-      {loading ? <MatchRow loading={true}/> : ''}
+      {loading ? <MatchRow key='loading' loading={true}/> : ''}
       </ul>
     </div>
   );
@@ -103,9 +105,11 @@ function MatchRow(props: MatchRowProps) {
   const { mid, puuid, loading } = props;
 
   useEffect(() => {
-    setMatchData(undefined);
-    setError(undefined);
-    refresh();
+    if(!loading){
+      setMatchData(undefined);
+      setError(undefined);
+      refresh();
+    }
   }, [mid]);
 
   function refresh() {
@@ -118,7 +122,7 @@ function MatchRow(props: MatchRowProps) {
     );
   }
 
-  if (loading || matchData?.participants === undefined || matchData.teams === undefined) {
+  if (loading || !matchData?.participants || !matchData?.teams) {
     //loading
     return (
       <li className='match-row neutral'>
@@ -128,7 +132,7 @@ function MatchRow(props: MatchRowProps) {
         <ItemList loading={true}/>
       </li>
     );
-  } else if (matchData !== undefined && matchData.participants !== [] && matchData.teams !== []) {
+  } else {
     let summoner: Api.ParticipantsData | undefined, team: Api.TeamsData | undefined;
     for (let s in matchData.participants) {
       if (matchData.participants[s].puuid == puuid) {
@@ -147,12 +151,6 @@ function MatchRow(props: MatchRowProps) {
         <Participation gold={Number(summoner.goldEarned!)} killParticipation={summoner.killParticipation}
           deal={Number(summoner.totalDamageDealtToChampions!)} cs={Number(summoner.totalMinionsKilled!)}/>
         <ItemList items={[summoner.item0, summoner.item1, summoner.item2, summoner.item3, summoner.item4, summoner.item5]}/>
-      </li>
-    );
-  } else {
-    return (
-      <li className='match-row'>
-        <p>Loading...</p>
       </li>
     );
   }
