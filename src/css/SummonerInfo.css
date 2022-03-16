@@ -6,7 +6,7 @@
 .icon-image {
     position: absolute;
     left: 50%;
-    transform: translate( -50%, 0% );
+    transform: translate( -50%, 0%);
 }
 
 .profileIcon {
@@ -16,7 +16,7 @@
     vertical-align: middle;
 }
 
-div.level-text {
+.level-text-container {
     height: 22px;
     text-align: center;
     margin: auto;
@@ -24,13 +24,14 @@ div.level-text {
     top: 100%;
     left: 50%;
     box-sizing: border-box;
-    transform: translate( -50%, -50% );
+    transform: translate( -50%, -50%);
 }
 
-p.level-text {
-    font-family: bold;
+.level-text {
+    font-weight: bold;
     width: 44px;
     height: 24px;
-    color: rgb(234, 189, 86);;
-    background: url("https://s-lol-web.op.gg/static/images/site/summoner/bg-levelbox.png") 0% 0% / 100%
+    color: rgb(105, 105, 105);
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
 }

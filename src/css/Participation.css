@@ -14,10 +14,13 @@ div.participation {
     vertical-align: middle;
 }
 
+.participation td {
+    padding: 1px 0;
+    margin: 0;
+}
+
 .participation td.key {
     text-align: center;
-    padding: 0;
-    margin: 0;
 }
 
 .participation td.val {
@@ -30,8 +33,9 @@ progress.participation {
 }
 
 .participation .key p {
-    padding: 0 5px;
-    margin: 0 5px;
+    border-radius: 10px;
+    padding: 0 4px;
+    margin: 0 0 0 3px;
     color: white;
-    background-color: gray;
+    background-color: rgb(160, 160, 160);
 }

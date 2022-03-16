@@ -18,3 +18,26 @@ ul {
 .loading * {
     background-color: rgb(241, 241, 241);
 }
+
+@keyframes grow {
+    from {
+        width: 0%
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0%
+    }
+    to {
+        opacity: 100%;
+    }
+}
+
+.fade-in {
+    animation-duration: 1s;
+    animation-name: fadein;
+}

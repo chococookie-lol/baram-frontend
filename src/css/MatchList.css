@@ -1,13 +1,14 @@
 div#matchData {
     clear: both;
+    margin: 0 0 50px 0;
 }
 
 li.match-row {
-    margin: 10px 10px 10px 10px;
+    margin: 10px;
 }
 
 li.match-row.win {
-    border: 2px solid cornflowerblue;
+    border: 2px solid rgb(133, 170, 238);
 }
 
 li.match-row.neutral {
@@ -15,7 +16,7 @@ li.match-row.neutral {
 }
 
 li.match-row.lose {
-    border: 2px solid indianred;
+    border: 2px solid rgb(241, 137, 137);
 }
 
 ul.match-list {

@@ -1,44 +1,112 @@
 div.champion-pic {
     margin: 0px;
     display: inline-block;
+    position: relative;
     vertical-align: middle;
+    overflow: hidden;
 }
 
 div.champion-wrapper {
+    vertical-align: middle;
+    display: inline-block;
     position: relative;
-    width: 100px;
+    width: 80px;
     height: 80px;
 }
 
 .champion-pic-container {
-    width: 100px;
+    display: inline-block;
+    width: 80px;
     height: 80px;
     position: relative;
     overflow: hidden;
-    object-fit: none;
+    object-fit: cover;
     height: inherit;
     width: inherit;
 }
 
 .gradient {
+    border: 6px solid white;
     position: absolute;
     height: inherit;
     width: inherit;
     top: 0;
     left: 0;
-    background: rgb(2, 0, 36);
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.2) 80%, rgba(255, 255, 255, 1) 100%);
 }
 
 div.level {
     position: absolute;
-    top: 0;
-    left: 0;
+    bottom: 0;
+    right: 0;
 }
 
 .level p {
+    font-size: 8px;
     padding: 1px 5px;
+    margin: 0;
     font-weight: bold;
     color: rgba(255, 255, 255, 1);
     background-color: rgba(68, 68, 68, 0.5);
+}
+
+.champion-main-rune {
+    display: block;
+    width: 48px;
+    height: 48px;
+    background-color: transparent;
+}
+
+.champion-sub-rune {
+    display: block;
+    object-fit: cover;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+}
+
+.sub-rune-container {
+    overflow: hidden;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+div.champion-rune-container {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto;
+    vertical-align: middle;
+    position: relative;
+}
+
+div.rune-spell {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    font-size: 0px;
+    letter-spacing: 0px;
+    word-spacing: 0px;
+}
+
+div.spell-container {
+    width: 48px;
+    text-align: center;
+}
+
+.spell {
+    overflow: hidden;
+    object-fit: cover;
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 20%;
+}
+
+.spell-wrapper {
+    display: inline-block;
 }

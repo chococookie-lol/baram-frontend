@@ -5,6 +5,7 @@ import ChampionInfo from './ChampionInfo';
 import Kda from './Kda';
 import Participation from './Participation';
 import ItemList from './ItemList';
+import { Button } from 'react-bootstrap';
 
 const infoKeys = [
   'matchId',
@@ -85,7 +86,7 @@ export default function MatchList(props: MatchListProps) {
         :
         <MatchRow loading={true}/>
       }
-      {canloadMore ? <li style={{textAlign:'center'}}><button onClick={loadMore}>더보기</button></li> : ''}
+      {canloadMore ? <li className='match-row' style={{textAlign:'center'}}><Button size='lg' style={{width:'100%'}} onClick={loadMore}>더보기</Button></li> : ''}
       {loading ? <MatchRow key='loading' loading={true}/> : ''}
       </ul>
     </div>

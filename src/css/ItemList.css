@@ -20,10 +20,6 @@ div.item-list {
     margin: 1px;
 }
 
-li.item {
-    background-color: rgb(219, 219, 219);
-}
-
 .item-list-item {
     width: inherit;
     height: inherit;

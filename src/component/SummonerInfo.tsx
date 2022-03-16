@@ -13,7 +13,6 @@ interface SummonerInfoProps {
 export default function SummonerInfo(props: SummonerInfoProps) {
   const { userdata } = props;
   const [isFetching, setIsFetching] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
 
   async function onButtonClick() {
     if (!userdata) {
@@ -41,16 +40,6 @@ export default function SummonerInfo(props: SummonerInfoProps) {
       }
     }
   }
-
-  useEffect(()=>{
-    //lazyload image
-    const img = new Image();
-    img.src = getProfileIconUrl(String(userdata?.profileIconId));
-    img.onload= () =>{
-      console.log('loaded image')
-      setLoading(false);
-    }
-  },[userdata])
   
 
   if (!userdata) {
@@ -65,6 +54,9 @@ export default function SummonerInfo(props: SummonerInfoProps) {
                 <div className='profile-wrap'>
                   <div className='icon-image'>
                     <div className='profileIcon loading'/>
+                  </div>
+                  <div className='level-text-container'>
+                    <div className='level-text'/>
                   </div>
                 </div>
               </Col>
@@ -93,15 +85,15 @@ export default function SummonerInfo(props: SummonerInfoProps) {
                   <div className='icon-image'>
                     <LazyImage className='profileIcon' src={getProfileIconUrl(String(userdata.profileIconId))}/>
                   </div>
-                  <div className='level-text'>
+                  <div className='level-text-container fade-in'>
                     <p className='level-text'>{userdata.summonerLevel}</p>
                   </div>
                 </div>
               </Col>
               <Col xxl={11} md={10} xs={7}>
                 <Stack gap={2}>
-                  <span style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{userdata.name}</span>
-                  <div>
+                  <span className='fade-in' style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{userdata.name}</span>
+                  <div className='fade-in'>
                     <Button variant='outline-primary' size='sm' onClick={onButtonClick} disabled={isFetching}>
                       {
                         isFetching ?
@@ -117,9 +109,9 @@ export default function SummonerInfo(props: SummonerInfoProps) {
                   </div>
                   {
                     !userdata.recentUpdate ?
-                    <span style={{ fontSize: '0.9em' }}>갱신 기록 없음</span>
+                    <span className='fade-in' style={{ fontSize: '0.9em' }}>갱신 기록 없음</span>
                     :
-                    <span style={{ fontSize: '0.9em' }}>최근 갱신: {new Date(Number(userdata.recentUpdate)).toLocaleDateString()}</span>
+                    <span className='fade-in' style={{ fontSize: '0.9em' }}>최근 갱신: {new Date(Number(userdata.recentUpdate)).toLocaleDateString()}</span>
                   }
                 </Stack>
               </Col>

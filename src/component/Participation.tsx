@@ -1,3 +1,4 @@
+import { Fade } from 'react-bootstrap';
 import '../css/Participation.css';
 import ProgressBar from './ProgressBar';
 
@@ -16,7 +17,7 @@ export default function Participation(props: ParticipationProps) {
     </div>)
   }
   return (
-    <div className='participation'>
+    <div className='participation fade-in'>
       <table>
         <tbody>
           <tr>
