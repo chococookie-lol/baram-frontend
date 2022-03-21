@@ -96,7 +96,7 @@ export function fetchSummonerData(name: string) {
     method: 'POST',
   }).then((res) => {
     switch (res.status) {
-      case 200: //fetch success
+      case 201: //fetch success
         //return fetch(`${server}/summoners/${name}`).then(res => res.json());
         return undefined;
       case 403: //summoner not found
