@@ -20,56 +20,56 @@ const infoKeys = [
 ];
 
 interface MatchListProps {
-  matchdata?: string[],
-  puuid?: string,
+  matchdata?: string[];
+  puuid?: string;
 }
 
-interface MatchListRef{
-  load: number,
-  last: number,
+interface MatchListRef {
+  load: number;
+  last: number;
 }
 
 export default function MatchList(props: MatchListProps) {
-  const {puuid} = props;
+  const { puuid } = props;
   const [matchdata, setMatchData] = useState<string[]>(props.matchdata!);
   const [canloadMore, setCanLoadMore] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const ref = useRef<MatchListRef>({load:0, last:0});
+  const ref = useRef<MatchListRef>({ load: 0, last: 0 });
 
-  async function loadMore(){
+  async function loadMore() {
     setCanLoadMore(false);
     setLoading(true);
-    try{
-      let res:string[] = await Api.getMatchesBySummonerAfter(puuid!, ref.current.last);
+    try {
+      let res: string[] = await Api.getMatchesBySummonerAfter(puuid!, ref.current.last);
       setMatchData([...matchdata, ...res]);
       setCanLoadMore(true);
       setLoading(false);
-    }catch(err){
+    } catch (err) {
       await fetchMore();
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     setMatchData(props!.matchdata!);
-  },[props.matchdata])
+  }, [props.matchdata]);
 
-  async function fetchMore(){
-    try{
+  async function fetchMore() {
+    try {
       await Api.fetchMatchDataAfter(puuid!, ref.current.last);
-      let res:string[] = await Api.getMatchesBySummonerAfter(puuid!, ref.current.last);
+      let res: string[] = await Api.getMatchesBySummonerAfter(puuid!, ref.current.last);
       setMatchData([...matchdata, ...res]);
       setCanLoadMore(true);
       setLoading(false);
-    }catch(err){
+    } catch (err) {
       console.log(err);
       setCanLoadMore(false);
       setLoading(false);
     }
   }
 
-  function loaded(time: number){
+  function loaded(time: number) {
     ref.current.load++;
-    if(ref.current.last > time || ref.current.last == 0){
+    if (ref.current.last > time || ref.current.last == 0) {
       //update last time
       ref.current.last = time;
     }
@@ -78,26 +78,32 @@ export default function MatchList(props: MatchListProps) {
 
   return (
     <div id="matchData">
-      <ul className='match-list'>
-      {matchdata?
-        matchdata.map((i) => (
-          <MatchRow key={i+puuid} mid={i} load={loaded} puuid={puuid!} />
-        ))
-        :
-        <MatchRow loading={true}/>
-      }
-      {canloadMore ? <li className='match-row' style={{textAlign:'center'}}><Button size='lg' style={{width:'100%'}} onClick={loadMore}>더보기</Button></li> : ''}
-      {loading ? <MatchRow key='loading' loading={true}/> : ''}
+      <ul className="match-list">
+        {matchdata ? (
+          matchdata.map(i => <MatchRow key={i + puuid} mid={i} load={loaded} puuid={puuid!} />)
+        ) : (
+          <MatchRow loading={true} />
+        )}
+        {canloadMore ? (
+          <li className="match-row" style={{ textAlign: 'center' }}>
+            <Button size="lg" style={{ width: '100%' }} onClick={loadMore}>
+              더보기
+            </Button>
+          </li>
+        ) : (
+          ''
+        )}
+        {loading ? <MatchRow key="loading" loading={true} /> : ''}
       </ul>
     </div>
   );
 }
 
 interface MatchRowProps {
-  mid?: string,
-  puuid?: string,
-  load?: Function,
-  loading?: boolean,
+  mid?: string;
+  puuid?: string;
+  load?: Function;
+  loading?: boolean;
 }
 
 function MatchRow(props: MatchRowProps) {
@@ -106,7 +112,7 @@ function MatchRow(props: MatchRowProps) {
   const { mid, puuid, loading } = props;
 
   useEffect(() => {
-    if(!loading){
+    if (!loading) {
       setMatchData(undefined);
       setError(undefined);
       refresh();
@@ -115,22 +121,22 @@ function MatchRow(props: MatchRowProps) {
 
   function refresh() {
     Api.getMatchDetail(props.mid!).then(
-      (res) => {
+      res => {
         setMatchData(res);
         props.load!(res.gameEndTimestamp);
       },
-      (err) => setError(err)
+      err => setError(err),
     );
   }
 
   if (loading || !matchData?.participants || !matchData?.teams) {
     //loading
     return (
-      <li className='match-row neutral'>
-        <ChampionInfo loading={true}/>
-        <Kda loading={true}/>
-        <Participation loading={true}/>
-        <ItemList loading={true}/>
+      <li className="match-row neutral">
+        <ChampionInfo loading={true} />
+        <Kda loading={true} />
+        <Participation loading={true} />
+        <ItemList loading={true} />
       </li>
     );
   } else {
@@ -142,21 +148,25 @@ function MatchRow(props: MatchRowProps) {
       }
     }
     if (error || !summoner || !team) {
-      return (<>error</>);
+      return <>error</>;
     }
 
     return (
       <li className={'match-row ' + (team.win ? 'win' : 'lose')}>
-        <ChampionInfo championName={summoner.championName} level={summoner.champLevel}/>
+        <ChampionInfo championName={summoner.championName} level={summoner.champLevel} />
         <Kda k={summoner.kills} d={summoner.deaths} a={summoner.assists} kda={summoner.kda} />
-        <Participation gold={Number(summoner.goldEarned!)} killParticipation={summoner.killParticipation}
-          deal={Number(summoner.totalDamageDealtToChampions!)} cs={Number(summoner.totalMinionsKilled!)}/>
-        <ItemList items={[summoner.item0, summoner.item1, summoner.item2, summoner.item3, summoner.item4, summoner.item5]}/>
+        <Participation
+          gold={Number(summoner.goldEarned!)}
+          killParticipation={summoner.killParticipation}
+          deal={Number(summoner.totalDamageDealtToChampions!)}
+          cs={Number(summoner.totalMinionsKilled!)}
+        />
+        <ItemList
+          items={[summoner.item0, summoner.item1, summoner.item2, summoner.item3, summoner.item4, summoner.item5]}
+        />
       </li>
     );
   }
 }
 
-function loadingMatchRow(){
-  
-}
+function loadingMatchRow() {}

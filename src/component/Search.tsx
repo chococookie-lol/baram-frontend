@@ -27,24 +27,26 @@ export default function Search() {
     if (name !== undefined) {
       setSummonerName(name);
     }
-  }, [name])
+  }, [name]);
 
   return (
     <>
-      <div className='HeaderBox'></div>
+      <div className="HeaderBox"></div>
       <div className="SearchBoxContainer">
         <form onSubmit={onSubmit}>
-          <FormGroup role='form'>
+          <FormGroup role="form">
             <Stack gap={2}>
               <div></div>
               <Container>
-                <Row className='justify-content-center'>
-                  <Col md={6} sm={9} xs={12} className='mb-1'>
-                    <FormControl type='text' value={summonerName} onChange={onChange} placeholder="소환사명" />
+                <Row className="justify-content-center">
+                  <Col md={6} sm={9} xs={12} className="mb-1">
+                    <FormControl type="text" value={summonerName} onChange={onChange} placeholder="소환사명" />
                   </Col>
-                  <Col md={2} sm={3} xs={12} className='mb-1'>
-                    <div className='d-grid'>
-                      <Button variant='primary' disabled={isLoading} type='submit'>검색</Button>
+                  <Col md={2} sm={3} xs={12} className="mb-1">
+                    <div className="d-grid">
+                      <Button variant="primary" disabled={isLoading} type="submit">
+                        검색
+                      </Button>
                     </div>
                   </Col>
                 </Row>

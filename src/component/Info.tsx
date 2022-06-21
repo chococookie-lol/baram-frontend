@@ -3,7 +3,7 @@ import SummonerInfo from './SummonerInfo';
 import MatchList from './MatchList';
 import * as Api from '../model/Api';
 import { useParams } from 'react-router-dom';
-import { Alert, Collapse} from 'react-bootstrap';
+import { Alert, Collapse } from 'react-bootstrap';
 import RippleSpinner from './RippleSpinner';
 import '../css/Info.css';
 
@@ -55,15 +55,15 @@ export default function Info() {
       <div>
         <p>userData or matchIds is undefined</p>
       </div>
-    )
+    );
   }
   return (
     <div id="container">
       <Collapse in={loading}>
-        <div className='alert-container'>
-          <Alert className='alert-loading' variant='primary'>
-              <RippleSpinner/>
-              <p className='loading-text'> 소환사 정보를 가져오는 중...</p>
+        <div className="alert-container">
+          <Alert className="alert-loading" variant="primary">
+            <RippleSpinner />
+            <p className="loading-text"> 소환사 정보를 가져오는 중...</p>
           </Alert>
         </div>
       </Collapse>
